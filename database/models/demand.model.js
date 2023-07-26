@@ -3,13 +3,11 @@ const mongoose = require('mongoose');
 const demandSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    unique: true,
+    required: true
   },
   email: {
     type: String,
-    required: true,
-    unique: true,
+    required: true
   },
   type: {
     type: String
@@ -20,6 +18,10 @@ const demandSchema = new mongoose.Schema({
   },
   agentResponse: {
     type: String,
+  },
+  userId : {
+    type : mongoose.Schema.Types.ObjectId,
+    require : true
   }
 });
 

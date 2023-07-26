@@ -1,21 +1,16 @@
-const { Demand } = require("../database");
+const { User } = require("../database");
+const { findOne } = require("../database/models/demand.model");
 
 
 
-exports.createDemand = async (name, email, type, description) => {
+
+
+
+exports.signup = async (name, email, password, role) => {
   try {
-    const createdDemand = await Demand.create({ name, email, type, description })
-    return createdDemand
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-
-exports.getDemands = async () => {
-  try {
-    const demands = await Demand.find()
+    const demands = await User.create({
+      name, email, password, role
+    })
     return demands
   } catch (error) {
     console.error(error);
@@ -23,12 +18,22 @@ exports.getDemands = async () => {
   }
 }
 
-exports.getDemandsByUser = async (user) => {
+exports.getUserById = async (id) => {
   try {
-    const demands = await Demand.find({
-      userId: user._id 
+    const user = await User.findOne({ _id: id })
+    return user
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+exports.getUserByEmail = async (email) => {
+  try {
+    const user = User.findOne({
+      email: email
     })
-    return demands
+    return user
   } catch (error) {
     console.error(error);
     throw error;
@@ -58,7 +63,6 @@ exports.deleteDemandById = async (id) => {
 }
 
 exports.demandRespond = async (id, agentResponse) => {
-  console.log('demandRespond', id, agentResponse)
   try {
     const updatedDemand = await Demand.updateOne({
       _id: id

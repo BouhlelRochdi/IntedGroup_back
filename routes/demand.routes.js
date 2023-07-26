@@ -1,13 +1,15 @@
 const router = require("express").Router();
 const demand = require("../controllers/demand.controller.js");
+const { checkToken } = require("../middlewares/checkToken.middleware.js");
 
 
 
-router.post("/", demand.createDemand);
-router.get("/", demand.getDemands);
-router.get("/demande/:id", demand.getDemandById);
-router.delete("/demande/:id", demand.deleteDemandById);
-router.put("/demande/:id", demand.deleteDemandById);
+router.post("/", checkToken, demand.createDemand);
+router.get("/", checkToken, demand.getDemands);
+router.get("/demande/:id", checkToken, demand.getDemandById);
+router.delete("/demande/:id", checkToken, demand.deleteDemandById);
+router.put("/demande/:id", checkToken, demand.demandRespond);
 
 
 module.exports = router;
+ 

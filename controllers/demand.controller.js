@@ -22,7 +22,7 @@ exports.getDemands = async (req, res) => {
     const demands = await demandService.getDemands()
     resHandler.setSuccess(200, "Demandes a été recupéré avec succes", demands);
     return resHandler.send(res);
-  } catch (error) {
+  } catch (error) {ama 
     console.log(error);
     resHandler.setError(
       400,
@@ -71,8 +71,36 @@ exports.demandRespond = async (req, res) => {
     const id = req.params.id
     const agentResponse = req.body.agentResponse
     const updatedDemand = await demandService.demandRespond(id,agentResponse)
+    console.log('updatedDemand', updatedDemand)
     resHandler.setSuccess(200, "Demande a été repondu avec succes", updatedDemand);
     return resHandler.send(res);
+  } catch (error) {
+    console.log(error);
+    resHandler.setError(
+      400,
+      "Erreur au reponse du demande"
+    );
+    return resHandler.send(res);
+  }
+}
+
+
+exports.demandesByUser = async (req, res) => {
+
+  try {
+    if(req.profil.role === 'user'){
+      const demands = await demandService.getDemandsByUser(req.profil)
+      console.log('updatedDemand', demands)
+      resHandler.setSuccess(200, "Demande a été repondu avec succes", demands);
+      return resHandler.send(res);
+    }
+    else{
+      const demands = await demandService.getDemands()
+      console.log('updatedDemand', demands)
+      resHandler.setSuccess(200, "Demande a été repondu avec succes", demands);
+      return resHandler.send(res);
+
+    }
   } catch (error) {
     console.log(error);
     resHandler.setError(
