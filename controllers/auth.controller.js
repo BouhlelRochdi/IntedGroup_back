@@ -67,8 +67,9 @@ exports.signup = async (req, res) => {
 exports.getCurrentUser = async (req, res) => {
   try {
     let user = req.profil
-    delete user.password
-    resHandler.setSuccess(200, "utilisateur recuperer avec succes", user);
+    const foudedUser = await userService.getUserById(user._id)
+    delete foudedUser.password
+    resHandler.setSuccess(200, "utilisateur recuperer avec succes", foudedUser);
     return resHandler.send(res);
   }
   catch (error) {

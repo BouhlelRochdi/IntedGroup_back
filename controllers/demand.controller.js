@@ -4,7 +4,8 @@ const resHandler = require("../helpers/responseHandler.helper");
 exports.createDemand = async (req, res) => {
   try {
     const { name, email, type, description } = req.body
-    const newDemand = await demandService.createDemand(name, email, type, description)
+    userId = req.profil._id
+    const newDemand = await demandService.createDemand(name, email, type, description, userId)
     resHandler.setSuccess(200, "Demande a été ajouter avec succes", newDemand);
     return resHandler.send(res);
   } catch (error) {
@@ -90,13 +91,11 @@ exports.demandesByUser = async (req, res) => {
   try {
     if(req.profil.role === 'user'){
       const demands = await demandService.getDemandsByUser(req.profil)
-      console.log('updatedDemand', demands)
       resHandler.setSuccess(200, "Demande a été repondu avec succes", demands);
       return resHandler.send(res);
     }
     else{
       const demands = await demandService.getDemands()
-      console.log('updatedDemand', demands)
       resHandler.setSuccess(200, "Demande a été repondu avec succes", demands);
       return resHandler.send(res);
 

@@ -1,10 +1,12 @@
-const { Demand } = require("../database");
+const { Demand, User } = require("../database");
 
 
 
-exports.createDemand = async (name, email, type, description) => {
+exports.createDemand = async (name, email, type, description, userId) => {
   try {
-    const createdDemand = await Demand.create({ name, email, type, description })
+    const findedUser = await User.findOne({ _id: userId })
+    const createdDemand = await Demand.create({ name, email, type, description, userId })
+    await User.updateOne({ _id: userId }, { $push: { demandeId: createdDemand._id } })
     return createdDemand
   } catch (error) {
     console.error(error);
@@ -15,7 +17,7 @@ exports.createDemand = async (name, email, type, description) => {
 
 exports.getDemands = async () => {
   try {
-    const demands = await Demand.find()
+    const demands = await Demand.find().populate('userId');
     return demands
   } catch (error) {
     console.error(error);
@@ -26,8 +28,8 @@ exports.getDemands = async () => {
 exports.getDemandsByUser = async (user) => {
   try {
     const demands = await Demand.find({
-      userId: user._id 
-    })
+      userId: user._id
+    }).populate('userId');
     return demands
   } catch (error) {
     console.error(error);

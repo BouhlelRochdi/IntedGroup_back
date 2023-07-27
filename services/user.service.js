@@ -1,11 +1,6 @@
 const { User } = require("../database");
 const { findOne } = require("../database/models/demand.model");
 
-
-
-
-
-
 exports.signup = async (name, email, password, role) => {
   try {
     const demands = await User.create({
